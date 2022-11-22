@@ -1,0 +1,39 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+li {
+    list-style-type: none;
+}
+
+
+.home {
+    text-align:center;
+    padding-bottom: 50px;
+}
+.home .home-title{
+
+}
+.home .home-body {
+
+}
+
+
+.home-img img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 600px;
+}
+
+.child-container{
+
+}
+
+.child-container img{
+    max-width: 300px;
+    width: 100%;
+}

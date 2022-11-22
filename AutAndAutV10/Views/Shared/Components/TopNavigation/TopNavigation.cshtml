@@ -1,0 +1,71 @@
+﻿@using AutAndAutV10.Controllers
+@using Microsoft.AspNetCore.Identity
+@using ModelsBuilder
+@using Umbraco.Cms.Core.Security
+@inject IMemberManager _memberManager;
+@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@inject IPublishedValueFallback PublishedValueFallback
+@{
+    var childNode = Model.Root().Children.ToList();
+    var member = await _memberManager.GetCurrentMemberAsync();
+}
+<!-- uncomment this line if you don't want it to appear in the top navigation -->
+
+<div class="navbar">
+    <a href="@Model.Root().Url()">@Model.Root().GetProperty("title").Value(PublishedValueFallback)</a>
+    @foreach (var navitem in childNode)
+    {
+        var hideInMenu = navitem.Properties.FirstOrDefault(x => x.Alias.Equals("hideInNavbar"))?.Value<bool>(PublishedValueFallback);
+        if ((User.Identity.IsAuthenticated && (navitem.ContentType.Alias.Equals("register") || navitem.ContentType.Alias.Equals("login")))
+        || hideInMenu == true)
+        {
+            continue;
+        }
+        else if (User.Identity.IsAuthenticated && ((navitem.ContentType.Alias.Equals(SecurityPage.ModelTypeAlias) || navitem.IsDocumentType(TwoFa.ModelTypeAlias))))
+        {
+            <a href="@navitem.Url()" data-toggle="" class="">
+                @navitem.Name
+            </a>
+        }
+        if ((!User.Identity.IsAuthenticated || User.Identity.IsAuthenticated) && (!navitem.IsDocumentType(SecurityPage.ModelTypeAlias) && !navitem.IsDocumentType(TwoFa.ModelTypeAlias)))
+        {
+            <a href="@navitem.Url()" data-toggle="" class="">
+                @navitem.Name
+            </a>
+        }
+        
+
+    }
+
+    @if ( User.Identity.IsAuthenticated)
+    {
+        <div class="login-logout">
+            @using (Html.BeginUmbracoForm("SubmitLogout", "Member", FormMethod.Post))
+            {
+                <button name="login" type="submit">Logout</button>
+            } 
+        </div>
+        <div class="username">
+            <h2>@member?.UserName</h2>
+        </div>
+    }
+   
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <div class="login-logout">
+            @using (Html.BeginUmbracoForm("GoogleLogin", "GoogleAccount", FormMethod.Post))
+            {
+                <button name="login" type="submit">Google</button>
+            }
+        </div>
+    }@if (!User.Identity.IsAuthenticated)
+    {
+        <div class="login-logout">
+            @using (Html.BeginUmbracoForm("FacebookLogin", "FacebookAccount", FormMethod.Post))
+            {
+                <button name="login" type="submit">Facebook</button>
+            }
+        </div>
+    }
+</div>

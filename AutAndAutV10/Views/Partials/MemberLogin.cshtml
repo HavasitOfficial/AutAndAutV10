@@ -1,0 +1,38 @@
+﻿@using AutAndAutV10.Controllers
+@using AutAndAutV10.Models
+@model AutAndAutV10.Models.LoginModel
+@{
+    
+}
+<div class="login-container">
+    <div class="wrapper-container">
+        <div class="">
+            @using (Html.BeginUmbracoForm<MemberController>("SubmitLogin", FormMethod.Post))
+            {               
+                <div class="login-label position">
+                    @Html.LabelFor(m => m.Username)
+                </div>
+
+                <div class="login-label position">
+                    @Html.TextBoxFor(m => m.Username, new { placeholder = "Username" })
+                </div>
+
+                <div class="login-label position">
+                    @Html.LabelFor(m => m.Password)
+                </div>
+                <div class="login-label position">
+                    @Html.PasswordFor(m => m.Password, new { placeholder = "Password" })
+                </div>
+
+                <div class="position">   
+                    <button name="login" type="submit">Login</button>
+                </div>
+                @Html.ValidationSummary()    
+            }
+            <div class="position">
+                @Html.ActionLink("Forgot Password","RedirectToForgotPage","Member")
+            </div>
+        </div>
+       
+    </div>
+</div>

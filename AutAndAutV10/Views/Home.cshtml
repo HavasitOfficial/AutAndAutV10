@@ -1,0 +1,55 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@inject IPublishedValueFallback PublishedValueFallback
+@{
+	Layout = "FeaturedLayout.cshtml";
+}
+
+@section Featured
+{
+    <div class="home-img">
+        <img src="@Model.GetProperty("image").Value(PublishedValueFallback)" class="home-img img" />
+    </div>
+}
+
+@section Body
+{
+    <div class="">
+        <div class="">
+            <div class="home">
+                <h2 class="home-title">@Model.GetProperty("title").Value(PublishedValueFallback)</h2>
+                <div class="home-body">@Html.Raw(Model.GetProperty("body").Value(PublishedValueFallback))</div>
+            </div>
+            
+            <div class="child-container">
+                <ul>
+                    @foreach (var child in Model.Root().Children.ToList())
+                    {
+                        if (child.IsDocumentType("contentPage"))
+                        {
+                            <li>
+                                <div class="">
+                                    <a href="@child.Url()">
+                                        <img src="@child.GetProperty("image").Value(PublishedValueFallback)" class="child-img" />
+                                    </a>
+                                </div>
+
+                                <div class="">
+                                    <h3><a href="@child.Url()">@child.GetProperty("title").Value(PublishedValueFallback)</a></h3>
+                                    <div class="">@child.CreateDate.ToShortDateString()</div>
+                                    <div class="">@Html.Raw(child.GetProperty("body").Value(PublishedValueFallback))</div>
+                                </div>
+                                <hr />
+                            </li>
+                        }
+                     }
+                </ul>
+            </div>
+        </div>
+    </div>
+}
+
+@section RightRail
+{
+
+}

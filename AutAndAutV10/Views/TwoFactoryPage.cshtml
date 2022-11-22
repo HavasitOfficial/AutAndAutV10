@@ -1,0 +1,65 @@
+﻿@using AutAndAutV10.TwoFactor;
+@using Umbraco.Cms.Core.Services;
+@using Umbraco.Cms.Web.Website.Controllers;
+@using Umbraco.Cms.Web.Website.Models;
+@inject MemberModelBuilderFactory memberModelBuilderFactory
+@inject ITwoFactorLoginService twoFactorLoginService
+
+@{
+    Layout = "FeaturedLayout.cshtml";
+}
+@section Featured
+{
+
+}
+@section Body
+{
+    <div class="login-container">
+        <div class="wrapper-container">
+            @{
+                // Build a profile model to edit
+                var profileModel = await memberModelBuilderFactory
+                .CreateProfileModel()
+                .BuildForCurrentMemberAsync();
+                // Show all two factor providers
+                var providerNames = twoFactorLoginService.GetAllProviderNames();
+                if (providerNames.Any())
+                {
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    foreach (var providerName in providerNames)
+                    {
+                        var setupData = await twoFactorLoginService.GetSetupInfoAsync(profileModel.Key, providerName);
+                        if (setupData is null)
+                        {
+                            @using (Html.BeginUmbracoForm<UmbTwoFactorLoginController>(nameof(UmbTwoFactorLoginController.Disable)))
+                            {
+                                <input type="hidden" name="providerName" value="@providerName" />
+                                <button type="submit">Disable @providerName</button>
+                            }
+                        }
+                        else if (setupData is QrCodeSetupData qrCodeSetupData)
+                        {
+                            @using (Html.BeginUmbracoForm<UmbTwoFactorLoginController>(nameof(UmbTwoFactorLoginController.ValidateAndSaveSetup)))
+                            {
+                                <h3>Setup @providerName</h3>
+                                <img src="@qrCodeSetupData.SetupCode.QrCodeSetupImageUrl" />
+                                <p>Scan the code above with your authenticator app <br /> and enter the resulting code here to validate:</p>
+                                <input type="hidden" name="providerName" value="@providerName" />
+                                <input type="hidden" name="secret" value="@qrCodeSetupData.Secret" />
+                                <input type="text" name="code" />
+                                <button type="submit">Validate & save</button>
+                            }
+                        }
+                    }
+                }
+            }
+        </div>
+    </div>
+    
+}
+
+
+@section RightRail
+{
+
+}

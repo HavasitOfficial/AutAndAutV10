@@ -1,0 +1,40 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@inject IPublishedValueFallback PublishedValueFallback
+@{
+	Layout = "FeaturedLayout.cshtml";
+}
+
+@section Featured
+{
+    <div class="home-img img">
+        <img src="@Model.Root().GetProperty("image").Value(PublishedValueFallback)" />
+    </div>
+}
+
+@section Body
+{
+    <div class="">
+        <div class="">
+            <div class="">
+
+                <input type="hidden" id="PageId" value="@Model.Id"/>
+
+                <div class="">@Model.CreateDate.ToShortDateString()</div>
+                <h2>@Model.GetProperty("title").Value(PublishedValueFallback)</h2>
+
+                <div>
+                    <img src="@Model.GetProperty("image").Value(PublishedValueFallback)" class="contentpage-img" />
+                </div>
+
+                <div class="">@Html.Raw(Model.GetProperty("body").Value(PublishedValueFallback))</div>
+            </div>
+        </div>
+    </div>
+
+}
+
+@section RightRail
+{
+
+}

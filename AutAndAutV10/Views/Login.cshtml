@@ -1,0 +1,11 @@
+﻿@using Umbraco.Cms.Core.Security
+@using Umbraco.Cms.Core.Services;
+@using Umbraco.Cms.Web.Website.Models;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@inject IMemberManager _memberManager;
+@{
+	Layout = "Master.cshtml";
+}
+@if(!_memberManager.IsLoggedIn()){
+	@(await Component.InvokeAsync("MemberLogin"))
+}

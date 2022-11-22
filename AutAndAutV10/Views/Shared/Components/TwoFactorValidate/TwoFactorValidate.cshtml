@@ -1,0 +1,25 @@
+﻿@using AutAndAutV10.Controllers;
+@model AutAndAutV10.Models.TwoFactoryValidateModel
+@{
+}
+<div class="login-container">
+    <div class="wrapper-container">
+        <div class="">
+            @using (Html.BeginUmbracoForm<MemberController>("VerifyAuth", FormMethod.Post))
+            {
+                <div class="login-label position">
+                    @Html.LabelFor(m => m.Code)
+                </div>
+
+                <div class="login-label position">
+                    @Html.TextBoxFor(m => m.Code, new { placeholder = "Code" })
+                </div>
+
+                <div class="position">
+                    <button name="validate" type="submit">Validate</button>
+                </div>
+                @Html.ValidationSummary()
+            }
+        </div>
+    </div>
+</div>

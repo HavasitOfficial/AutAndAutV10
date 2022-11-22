@@ -1,0 +1,39 @@
+﻿@using AutAndAutV10.Models
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<RegisterModel>
+@model AutAndAutV10.Models.RegisterModel
+
+
+<div class="login-container">
+    <div class="wrapper-container">
+        @using (Html.BeginUmbracoForm("Register", "Member", FormMethod.Post, new { @class = "text-left" }))
+        {
+            <div class="login-label position">
+                @Html.LabelFor(m =>m.Name)
+            </div>
+
+            <div class="login-label position">
+                @Html.TextBoxFor(m => m.Name, new { placeholder = "Name" })
+            </div>
+            <div class="login-label position">
+                @Html.LabelFor(m =>m.Email)
+            </div>
+
+            <div class="login-label position">
+                @Html.TextBoxFor(m => m.Email, new { placeholder = "Email" })
+            </div>
+
+            <div class="login-label position">
+                @Html.LabelFor(m =>m.Password)
+            </div>
+
+            <div class="login-label position">
+                @Html.PasswordFor(m => m.Password, new { placeholder = "Password" })
+            </div>
+            <br />
+            <div class="position">
+                <button name="login" type="submit">Register</button>
+            </div>
+            @Html.ValidationSummary()
+        }
+    </div>
+</div>
