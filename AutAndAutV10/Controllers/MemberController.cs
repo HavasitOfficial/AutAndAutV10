@@ -95,11 +95,15 @@ namespace AutAndAutV10.Controllers
 		[HttpPost]
 		public async Task<IActionResult> VerifyAuthAsync(TwoFactoryValidateModel twoFactory)
 		{
+            if (twoFactory == null || string.IsNullOrEmpty(twoFactory.Code))
+            {
+                return BadRequest();
+            }
             var twoFactorcode = twoFactory.Code;
             var sessionMemberGuid = HttpContext.Session.GetString(SessionMemberKey);
 
             var accountSecretKey =await _twoFactorAuthService.GetAccountSecretKeyAsync(sessionMemberGuid);
-            var isValidCode = _twoFactorAuthService.ValidateTwoFacthor(accountSecretKey, twoFactorcode);
+            var isValidCode = _twoFactorAuthService.ValidateTwoFactor(accountSecretKey, twoFactorcode);
             var sessionEmail = HttpContext.Session.GetString(SessionMemberEmail);
 
             if (await _twoFactorAuthService.TryLoginAndRedirectAsync(isValidCode, sessionEmail))

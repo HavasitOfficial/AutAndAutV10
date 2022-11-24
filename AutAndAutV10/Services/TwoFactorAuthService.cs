@@ -31,7 +31,7 @@ namespace AutAndAutV10.Services
             return string.Empty;
         }
 
-        public bool ValidateTwoFacthor(string accountSecretKey, string twoFactorCode)
+        public bool ValidateTwoFactor(string accountSecretKey, string twoFactorCode)
         {
             var tfa = new TwoFactorAuthenticator();
             return tfa.ValidateTwoFactorPIN(accountSecretKey, twoFactorCode);
