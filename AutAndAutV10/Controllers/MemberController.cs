@@ -102,11 +102,11 @@ namespace AutAndAutV10.Controllers
             var twoFactorcode = twoFactory.Code;
             var sessionMemberGuid = HttpContext.Session.GetString(SessionMemberKey);
 
-            var accountSecretKey =await _twoFactorAuthService.GetAccountSecretKeyAsync(sessionMemberGuid);
+            var accountSecretKey =await _twoFactorAuthService.GetAccountSecretKeyAsync(sessionMemberGuid ?? string.Empty);
             var isValidCode = _twoFactorAuthService.ValidateTwoFactor(accountSecretKey, twoFactorcode);
             var sessionEmail = HttpContext.Session.GetString(SessionMemberEmail);
 
-            if (await _twoFactorAuthService.TryLoginAndRedirectAsync(isValidCode, sessionEmail))
+            if (await _twoFactorAuthService.TryLoginAndRedirectAsync(isValidCode, sessionEmail ?? string.Empty))
             {
                 return Redirect("/");
             }
