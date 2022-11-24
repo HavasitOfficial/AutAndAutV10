@@ -8,6 +8,7 @@ namespace AutAndAutV10.Services.Interfaces
         public Task<string> GetAccountSecretKeyAsync(string sessionGuidString, string sessionMemberKey);
         public bool ValidateTwoFacthor(string accountSecretKey, string twoFactorCode);
         public Task<bool> TryLoginAndRedirectAsync(bool isValidCode, string sessionEmail);
+        public Task<bool> IsTwoFactorEnabledAsync(Guid memberKey);
 
     }
 }

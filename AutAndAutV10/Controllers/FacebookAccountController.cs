@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using AutAndAutV10.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Mvc;
 using ModelsBuilder;
@@ -22,8 +23,8 @@ namespace AutAndAutV10.Controllers
         private readonly IMemberManager _memberManager;
         private readonly IMemberService _memberService;
         private readonly IMemberSignInManager _memberSignInManager;
+        private readonly ITwoFactorAuthService _twoFactorAuthService;
         private readonly IScopeProvider _coreScopeProvider;
-        private readonly ITwoFactorLoginService _twoFactorLoginService;
 
         public const string SessionMemberKey = "_MemberKey";
         public const string SessionMemberEmail = "_MemberEmail";
@@ -38,14 +39,14 @@ namespace AutAndAutV10.Controllers
            IMemberService memberService,
            IMemberSignInManager memberSignInManager,
            IScopeProvider coreScopeProvider,
-           ITwoFactorLoginService twoFactorLoginService)
+           ITwoFactorAuthService twoFactorAuthService)
            : base(umbracoContextAccessor, databaseFactory, services, appCaches, profilingLogger, publishedUrlProvider)
         {
             _memberManager = memberManager;
             _memberService = memberService;
             _memberSignInManager = memberSignInManager;
             _coreScopeProvider = coreScopeProvider;
-            _twoFactorLoginService = twoFactorLoginService;
+            _twoFactorAuthService = twoFactorAuthService;
         }
 
         //facebook user login
@@ -84,7 +85,7 @@ namespace AutAndAutV10.Controllers
                 user = await _memberManager.FindByNameAsync(email);
                 await _memberManager.AddToRolesAsync(user, new[] { "FacebookUser" });
             }
-            var isEnabledTwoFactor = _twoFactorLoginService.IsTwoFactorEnabledAsync(user.Key);
+            var isEnabledTwoFactor = _twoFactorAuthService.IsTwoFactorEnabledAsync(user.Key);
             if (isEnabledTwoFactor.Result)
             {
                 var sessionKey = user.Key.ToString();

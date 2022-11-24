@@ -26,8 +26,6 @@ namespace AutAndAutV10.Controllers
         private readonly IPasswordChanger<MemberIdentityUser> _passwordChanger;
         private readonly ITwoFactorAuthService _twoFactorAuthService;
 
-        private readonly ITwoFactorLoginService _twoFactorLoginService;
-
         public const string SessionMemberKey = "_MemberKey";
         public const string SessionMemberEmail = "_MemberEmail";
 
@@ -43,7 +41,6 @@ namespace AutAndAutV10.Controllers
             IMemberSignInManager memberSignInManager,
             IPasswordChanger<MemberIdentityUser> passwordChanger,
             IUserAccountService userAccountService,
-            ITwoFactorLoginService twoFactorLoginService,
             ITwoFactorAuthService twoFactorAuthService)
             : base(umbracoContextAccessor, databaseFactory, services, appCaches, profilingLogger, publishedUrlProvider)
         {
@@ -52,7 +49,6 @@ namespace AutAndAutV10.Controllers
             _memberSignInManager = memberSignInManager;
             _passwordChanger = passwordChanger;
             _userAccountService = userAccountService;
-            _twoFactorLoginService = twoFactorLoginService;
             _twoFactorAuthService = twoFactorAuthService;
         }
 
@@ -70,7 +66,7 @@ namespace AutAndAutV10.Controllers
 				if (await _memberManager.ValidateCredentialsAsync(model.Username, model.Password))
                 {
 					MemberIdentityUser currentMember = await _memberManager.FindByEmailAsync(model.Username);
-					var isEnabledTwoFactor = _twoFactorLoginService.IsTwoFactorEnabledAsync(currentMember.Key);
+					var isEnabledTwoFactor = _twoFactorAuthService.IsTwoFactorEnabledAsync(currentMember.Key);
                     if (isEnabledTwoFactor.Result)
                     {
                         var sessionKey = currentMember.Key.ToString();

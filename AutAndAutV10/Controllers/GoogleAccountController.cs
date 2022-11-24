@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using AutAndAutV10.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Mvc;
 using ModelsBuilder;
@@ -23,7 +24,7 @@ namespace AutAndAutV10.Controllers
         private readonly IMemberService _memberService;
         private readonly IMemberSignInManager _memberSignInManager;
         private readonly IScopeProvider _coreScopeProvider;
-        private readonly ITwoFactorLoginService _twoFactorLoginService;
+        private readonly ITwoFactorAuthService _twoFactorAuthService;
 
         public const string SessionMemberKey = "_MemberKey";
         public const string SessionMemberEmail = "_MemberEmail";
@@ -39,14 +40,14 @@ namespace AutAndAutV10.Controllers
             IMemberService memberService,
             IMemberSignInManager memberSignInManager,
             IScopeProvider coreScopeProvider,
-            ITwoFactorLoginService twoFactorLoginService)
+            ITwoFactorAuthService twoFactorAuthService)
             : base(umbracoContextAccessor, databaseFactory, services, appCaches, profilingLogger, publishedUrlProvider)
         {
             _memberManager = memberManager;
             _memberService = memberService;
             _memberSignInManager = memberSignInManager;
             _coreScopeProvider = coreScopeProvider;
-            _twoFactorLoginService = twoFactorLoginService;
+            _twoFactorAuthService = twoFactorAuthService;
         }
 
         //google user login
@@ -85,7 +86,7 @@ namespace AutAndAutV10.Controllers
                 user = await _memberManager.FindByEmailAsync(email);
                 await _memberManager.AddToRolesAsync(user, new[] { "GoogleUser" });
             }
-            var isEnabledTwoFactor = _twoFactorLoginService.IsTwoFactorEnabledAsync(user.Key);
+            var isEnabledTwoFactor = _twoFactorAuthService.IsTwoFactorEnabledAsync(user.Key);
             if (isEnabledTwoFactor.Result)
             {
                 var sessionKey = user.Key.ToString();

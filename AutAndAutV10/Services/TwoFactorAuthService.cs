@@ -1,7 +1,6 @@
 ﻿using AutAndAutV10.Services.Interfaces;
 using AutAndAutV10.TwoFactor;
 using Google.Authenticator;
-using Microsoft.AspNetCore.Mvc;
 using Umbraco.Cms.Core.Security;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Web.Common.Security;
@@ -48,6 +47,11 @@ namespace AutAndAutV10.Services
                 }
             }
             return false;
+        }
+
+        public Task<bool> IsTwoFactorEnabledAsync(Guid memberKey)
+        {
+            return _twoFactorLoginService.IsTwoFactorEnabledAsync(memberKey);
         }
     }
 }
