@@ -22,7 +22,7 @@ namespace AutAndAutV10.Services
         {
             return _twoFactorLoginService.IsTwoFactorEnabledAsync(memberKey);
         }
-        public async Task<string> GetAccountSecretKeyAsync(string sessionGuidString, string sessionMemberKey)
+        public async Task<string> GetAccountSecretKeyAsync(string sessionGuidString)
         {
             Guid.TryParse(sessionGuidString, out var sessionGuid);
             var sercretKey = await _twoFactorLoginService.GetSecretForUserAndProviderAsync(sessionGuid, nameof(UmbracoAppAuthenticator));

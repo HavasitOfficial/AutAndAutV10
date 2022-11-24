@@ -98,7 +98,7 @@ namespace AutAndAutV10.Controllers
             var twoFactorcode = twoFactory.Code;
             var sessionMemberGuid = HttpContext.Session.GetString(SessionMemberKey);
 
-            var accountSecretKey =await _twoFactorAuthService.GetAccountSecretKeyAsync(sessionMemberGuid, SessionMemberKey);
+            var accountSecretKey =await _twoFactorAuthService.GetAccountSecretKeyAsync(sessionMemberGuid);
             var isValidCode = _twoFactorAuthService.ValidateTwoFacthor(accountSecretKey, twoFactorcode);
             var sessionEmail = HttpContext.Session.GetString(SessionMemberEmail);
 
