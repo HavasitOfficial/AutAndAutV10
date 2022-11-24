@@ -24,10 +24,11 @@ namespace AutAndAutV10.Services
         }
         public async Task<string> GetAccountSecretKeyAsync(string sessionGuidString)
         {
-            Guid.TryParse(sessionGuidString, out var sessionGuid);
-            var sercretKey = await _twoFactorLoginService.GetSecretForUserAndProviderAsync(sessionGuid, nameof(UmbracoAppAuthenticator));
-
-            return sercretKey ?? string.Empty;
+            if(Guid.TryParse(sessionGuidString, out var sessionGuid))
+            {
+                return await _twoFactorLoginService.GetSecretForUserAndProviderAsync(sessionGuid, nameof(UmbracoAppAuthenticator)) ?? string.Empty;
+            }
+            return string.Empty;
         }
 
         public bool ValidateTwoFacthor(string accountSecretKey, string twoFactorCode)

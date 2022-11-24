@@ -106,7 +106,9 @@ namespace AutAndAutV10.Controllers
             {
                 return Redirect("/");
             }
-            return Redirect("/login");
+
+            ModelState.AddModelError("", "The Code is invalid.");
+            return CurrentUmbracoPage(); ;
         }
 
 		[HttpPost]
