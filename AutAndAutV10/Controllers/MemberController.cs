@@ -112,7 +112,7 @@ namespace AutAndAutV10.Controllers
             }
 
             ModelState.AddModelError("", "The Code is invalid.");
-            return CurrentUmbracoPage(); ;
+            return CurrentUmbracoPage();
         }
 
 		[HttpPost]

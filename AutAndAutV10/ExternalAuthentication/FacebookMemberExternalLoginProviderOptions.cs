@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using ModelsBuilder;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Web.Common.Security;
 
@@ -33,7 +34,7 @@ namespace AutAndAutV10.ExternalAuthentication
                 defaultIsApproved: true,
 
                 // Optionally specify the member type alias. Default is "Member"
-                defaultMemberTypeAlias: "Member",
+                defaultMemberTypeAlias: FacebookMember.ModelTypeAlias,
 
                 // Optionally specify the member groups names to add the auto-linking user to.
                 defaultMemberGroups: Array.Empty<string>()
