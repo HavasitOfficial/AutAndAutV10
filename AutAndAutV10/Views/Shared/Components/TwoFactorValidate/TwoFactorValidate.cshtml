@@ -5,7 +5,7 @@
 <div class="login-container">
     <div class="wrapper-container">
         <div class="">
-            @using (Html.BeginUmbracoForm<MemberController>("VerifyAuth", FormMethod.Post))
+            @using (Html.BeginUmbracoForm<MemberController>("VerifyAuthCode", FormMethod.Post))
             {
                 <div class="login-label position">
                     @Html.LabelFor(m => m.Code)

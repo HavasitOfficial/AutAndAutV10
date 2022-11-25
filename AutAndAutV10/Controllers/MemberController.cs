@@ -93,7 +93,7 @@ namespace AutAndAutV10.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> VerifyAuthAsync(TwoFactoryValidateModel twoFactory)
+		public async Task<IActionResult> VerifyAuthCode(TwoFactoryValidateModel twoFactory)
 		{
             if (twoFactory == null || string.IsNullOrEmpty(twoFactory.Code))
             {
