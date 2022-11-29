@@ -23,7 +23,6 @@ namespace AutAndAutV10.Controllers
         private readonly IMemberService _memberService;
         private readonly IUserAccountService _userAccountService;
         private readonly IMemberSignInManager _memberSignInManager;
-        private readonly IPasswordChanger<MemberIdentityUser> _passwordChanger;
         private readonly ITwoFactorAuthService _twoFactorAuthService;
 
         public const string SessionMemberKey = "_MemberKey";
@@ -39,7 +38,6 @@ namespace AutAndAutV10.Controllers
             IMemberManager memberManager,
             IMemberService memberService,
             IMemberSignInManager memberSignInManager,
-            IPasswordChanger<MemberIdentityUser> passwordChanger,
             IUserAccountService userAccountService,
             ITwoFactorAuthService twoFactorAuthService)
             : base(umbracoContextAccessor, databaseFactory, services, appCaches, profilingLogger, publishedUrlProvider)
@@ -47,7 +45,6 @@ namespace AutAndAutV10.Controllers
             _memberManager = memberManager;
             _memberService = memberService;
             _memberSignInManager = memberSignInManager;
-            _passwordChanger = passwordChanger;
             _userAccountService = userAccountService;
             _twoFactorAuthService = twoFactorAuthService;
         }
