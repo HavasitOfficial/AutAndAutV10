@@ -185,13 +185,15 @@ namespace AutAndAutV10.Controllers
             
             if (model.Password != model.ConfirmPassword)
             {
-                return NotFound();
+                ModelState.AddModelError("", "The passwords do not match.");
+                return CurrentUmbracoPage();
             }
 
             string memberToken = HttpContext.Request.Query["t"].ToString();
             if (string.IsNullOrEmpty(memberToken))
             {
-                return BadRequest();
+                ModelState.AddModelError("", "The Code is invalid.");
+                return CurrentUmbracoPage();
             }
             model.ForgottenPasswordToken = memberToken;
 
