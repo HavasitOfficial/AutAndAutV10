@@ -200,7 +200,7 @@ namespace AutAndAutV10.Controllers
             var member = await _memberManager.FindByEmailAsync(model.Email);
             if (member == null )
             {
-                return BadRequest();
+                return NotFound();
             }
             await _userAccountService.CheckEmailAndPasswordToken(model, member);
             await _memberSignInManager.PasswordSignInAsync(member.UserName, model.Password, false, true);
