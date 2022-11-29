@@ -7,7 +7,7 @@ namespace AutAndAutV10.Services
     public class ForgottenPasswordService : IForgottenPasswordService
     {
         private readonly IScopeProvider _scopeProvider;
-        //TODO idő és név
+
         private const double EXPIRY_DURATION_MINUTES = 10080;
 
         public ForgottenPasswordService(IScopeProvider scopeProvider)
