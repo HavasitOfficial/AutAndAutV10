@@ -56,7 +56,6 @@ namespace AutAndAutV10
                 .AddBackOffice()
                 .AddWebsite()
                 .AddComposers()
-                .AddGoogleAuthentication()
                 .AddMemberGoogleAuthentication()
                 .AddMemberFacebookAuthentication()
                 .Build();
