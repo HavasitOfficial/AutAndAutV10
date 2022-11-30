@@ -67,7 +67,7 @@ namespace AutAndAutV10.Controllers
             var result = await HttpContext.AuthenticateAsync(IdentityConstants.ExternalScheme);
 
             if (!result.Succeeded) throw new Exception("Missing external cookie");
-
+            var sv = result;
             var email = result.Principal.FindFirstValue(ClaimTypes.Email)
                 ?? result.Principal.FindFirstValue("email")
                 ?? throw new Exception("Missing email claim");
@@ -95,7 +95,7 @@ namespace AutAndAutV10.Controllers
             }
             else
             {
-                await HttpContext.SignOutAsync("Identity.External");
+                await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
                 await _memberSignInManager.SignInAsync(user, false);
             }
 

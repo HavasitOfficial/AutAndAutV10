@@ -96,7 +96,7 @@ namespace AutAndAutV10.Controllers
             }
             else
             {
-                await HttpContext.SignOutAsync("Identity.External");
+                await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
                 await _memberSignInManager.SignInAsync(user, false);
             }
 
