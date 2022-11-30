@@ -4,10 +4,9 @@ namespace AutAndAutV10.Extensions
 {
     public static class GoogleAuthenticationExtensions
     {
-        //user login
+
         public static IUmbracoBuilder AddMemberGoogleAuthentication(this IUmbracoBuilder builder)
         {
-            // Register GoogleMemberExternalLoginProviderOptions here rather than require it in startup
             builder.Services.ConfigureOptions<GoogleMemberExternalLoginProviderOptions>();
 
             builder.AddMemberExternalLogins(logins =>
@@ -16,7 +15,7 @@ namespace AutAndAutV10.Extensions
                     memberAuthenticationBuilder =>
                     {
                         memberAuthenticationBuilder.AddGoogle(
-                            // The scheme must be set with this method to work for the Umbraco members
+
                             memberAuthenticationBuilder.SchemeForMembers(GoogleMemberExternalLoginProviderOptions.SchemeName),
                             options =>
                             {

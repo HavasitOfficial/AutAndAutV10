@@ -55,8 +55,7 @@ namespace AutAndAutV10.Controllers
         {
             var properties = new AuthenticationProperties
             {
-                RedirectUri = Url.Action("GoogleResponse"),
-                Items = { { "returnUrl", returnUrl } }
+                RedirectUri = Url.Action("GoogleResponse")
             };
 
             return Challenge(properties, Constants.Security.MemberExternalAuthenticationTypePrefix + GoogleDefaults.AuthenticationScheme);
@@ -100,9 +99,7 @@ namespace AutAndAutV10.Controllers
                 await _memberSignInManager.SignInAsync(user, false);
             }
 
-            var returnUrl = result.Properties?.Items["returnUrl"];
-            if (returnUrl == null || !Url.IsLocalUrl(returnUrl)) returnUrl = "~/";
-            return new RedirectResult(returnUrl);
+            return Redirect("/");
         }
     }
 }

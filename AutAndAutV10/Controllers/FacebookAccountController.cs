@@ -50,12 +50,11 @@ namespace AutAndAutV10.Controllers
         }
 
         //facebook user login
-        public IActionResult FacebookLogin(string returnUrl)
+        public IActionResult FacebookLogin()
         {
             var properties = new AuthenticationProperties
             {
-                RedirectUri = Url.Action("FacebookResponse"),
-                Items = { { "returnUrl", returnUrl } }
+                RedirectUri = Url.Action("FacebookResponse")
             };
 
             return Challenge(properties, Constants.Security.MemberExternalAuthenticationTypePrefix + FacebookDefaults.AuthenticationScheme);
@@ -99,9 +98,7 @@ namespace AutAndAutV10.Controllers
                 await _memberSignInManager.SignInAsync(user, false);
             }
 
-            var returnUrl = result.Properties?.Items["returnUrl"];
-            if (returnUrl == null || !Url.IsLocalUrl(returnUrl)) returnUrl = "~/";
-            return new RedirectResult(returnUrl);
+            return Redirect("/");
         }
     }
 }
