@@ -1,6 +1,7 @@
 ﻿using AutAndAutV10.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ModelsBuilder;
 using System.Security.Claims;
@@ -64,7 +65,7 @@ namespace AutAndAutV10.Controllers
         //google user login
         public async Task<IActionResult> GoogleResponse()
         {
-            var result = await HttpContext.AuthenticateAsync("Identity.External");
+            var result = await HttpContext.AuthenticateAsync(IdentityConstants.ExternalScheme);
 
             if (!result.Succeeded) throw new Exception("Missing external cookie");
 

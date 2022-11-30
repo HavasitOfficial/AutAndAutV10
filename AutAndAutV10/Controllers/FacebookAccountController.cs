@@ -1,6 +1,7 @@
 ﻿using AutAndAutV10.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Facebook;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ModelsBuilder;
 using System.Security.Claims;
@@ -63,7 +64,7 @@ namespace AutAndAutV10.Controllers
         //facebook member login
         public async Task<IActionResult> FacebookResponse()
         {
-            var result = await HttpContext.AuthenticateAsync("Identity.External");
+            var result = await HttpContext.AuthenticateAsync(IdentityConstants.ExternalScheme);
 
             if (!result.Succeeded) throw new Exception("Missing external cookie");
 
