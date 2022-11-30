@@ -51,7 +51,7 @@ namespace AutAndAutV10.Controllers
         }
 
         //google user login
-        public IActionResult GoogleLogin(string returnUrl)
+        public IActionResult GoogleLogin()
         {
             var properties = new AuthenticationProperties
             {
