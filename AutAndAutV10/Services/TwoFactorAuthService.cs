@@ -39,7 +39,7 @@ namespace AutAndAutV10.Services
 
         public async Task<bool> TryLoginAndRedirectAsync(bool isValidCode, string sessionEmail)
         {
-            if (isValidCode && string.IsNullOrEmpty(sessionEmail))
+            if (isValidCode && !string.IsNullOrEmpty(sessionEmail))
             {
                 var twoFactorMember = await _memberManager.FindByEmailAsync(sessionEmail);
                 if (twoFactorMember != null && _memberSignInManager.SignInAsync(twoFactorMember, false).IsCompletedSuccessfully)
