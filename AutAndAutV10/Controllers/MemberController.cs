@@ -145,7 +145,6 @@ namespace AutAndAutV10.Controllers
                 _memberService.AssignRoles(new[] { member.Username }, new[] { "Member" });
                 _memberService.Save(member);
 
-                TempData["Success"] = true;
                 await _memberSignInManager.SignInAsync(identityMember, false);
             }
             return Redirect("/");
