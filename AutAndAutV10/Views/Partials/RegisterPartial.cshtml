@@ -29,6 +29,14 @@
             <div class="login-label position">
                 @Html.PasswordFor(m => m.Password, new { placeholder = "Password" })
             </div>
+
+            <div class="login-label position">
+                @Html.LabelFor(m =>m.ConfirmPassword)
+            </div>
+
+            <div class="login-label position">
+                @Html.PasswordFor(m => m.ConfirmPassword, new { placeholder = "Confirm Password" })
+            </div>
             <br />
             <div class="position">
                 <button name="login" type="submit">Register</button>

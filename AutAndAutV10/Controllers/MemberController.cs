@@ -124,9 +124,14 @@ namespace AutAndAutV10.Controllers
 
             if (await _memberManager.FindByEmailAsync(model.Email) != null)
             {
-                TempData["Success"] = false;
-                TempData["errorMessage"] = "User already registered!";
-
+                ModelState.AddModelError("", "User already registered!");
+                return CurrentUmbracoPage();
+            }
+            if (string.IsNullOrEmpty(model.Password)
+                || string.IsNullOrEmpty(model.ConfirmPassword)
+                || !model.Password.Equals(model.ConfirmPassword))
+            {
+                ModelState.AddModelError("", "The passwords do not match!");
                 return CurrentUmbracoPage();
             }
 

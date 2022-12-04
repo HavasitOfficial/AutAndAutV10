@@ -6,7 +6,7 @@ namespace AutAndAutV10.Extensions
     {
         public static IUmbracoBuilder AddMemberFacebookAuthentication(this IUmbracoBuilder builder)
         {
-            // Register GoogleMemberExternalLoginProviderOptions here rather than require it in startup
+
             builder.Services.ConfigureOptions<FacebookMemberExternalLoginProviderOptions>();
 
             builder.AddMemberExternalLogins(logins =>
@@ -15,7 +15,7 @@ namespace AutAndAutV10.Extensions
                     memberAuthenticationBuilder =>
                     {
                         memberAuthenticationBuilder.AddFacebook(
-                            // The scheme must be set with this method to work for the Umbraco members
+
                             memberAuthenticationBuilder.SchemeForMembers(FacebookMemberExternalLoginProviderOptions.SchemeName),
                             options =>
                             {
