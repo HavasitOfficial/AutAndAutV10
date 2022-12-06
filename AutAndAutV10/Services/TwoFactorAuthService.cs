@@ -42,7 +42,7 @@ namespace AutAndAutV10.Services
             if (isValidCode && !string.IsNullOrEmpty(sessionEmail))
             {
                 var twoFactorMember = await _memberManager.FindByEmailAsync(sessionEmail);
-                if (twoFactorMember != null && _memberSignInManager.SignInAsync(twoFactorMember, false).IsCompletedSuccessfully)
+                if (_memberSignInManager.SignInAsync(twoFactorMember, false).IsCompletedSuccessfully)
                 {
                     return true;
                 }

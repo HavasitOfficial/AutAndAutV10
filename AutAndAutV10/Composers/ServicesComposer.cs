@@ -13,6 +13,7 @@ namespace AutAndAutV10.Composers
             builder.Services.AddScoped<IUserAccountService, UserAccountService>();
             builder.Services.AddTransient<ISiteSettingsService, SiteSettingsService>();
             builder.Services.AddTransient<ITwoFactorAuthService, TwoFactorAuthService>();
+            builder.Services.AddTransient<IAccountDataService, AccountDataService>();
 
             builder.Services.AddScoped<IForgottenPasswordService, ForgottenPasswordService>();
         }

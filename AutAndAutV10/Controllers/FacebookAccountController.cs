@@ -22,13 +22,15 @@ namespace AutAndAutV10.Controllers
     public class FacebookAccountController : SurfaceController
     {
         private readonly IMemberManager _memberManager;
-        private readonly IMemberService _memberService;
         private readonly IMemberSignInManager _memberSignInManager;
         private readonly ITwoFactorAuthService _twoFactorAuthService;
-        private readonly IScopeProvider _coreScopeProvider;
+        private readonly IAccountDataService _accountDataService;
+        private readonly IUserAccountService _userAccountService;
 
         public const string SessionMemberKey = "_MemberKey";
         public const string SessionMemberEmail = "_MemberEmail";
+        private readonly IEnumerable<string> roles = new[] { "FacebookUser" };
+
         public FacebookAccountController(
            IUmbracoContextAccessor umbracoContextAccessor,
            IUmbracoDatabaseFactory databaseFactory,
@@ -37,17 +39,17 @@ namespace AutAndAutV10.Controllers
            IProfilingLogger profilingLogger,
            IPublishedUrlProvider publishedUrlProvider,
            IMemberManager memberManager,
-           IMemberService memberService,
            IMemberSignInManager memberSignInManager,
-           IScopeProvider coreScopeProvider,
-           ITwoFactorAuthService twoFactorAuthService)
+           ITwoFactorAuthService twoFactorAuthService,
+           IAccountDataService accountDataService,
+           IUserAccountService userAccountService)
            : base(umbracoContextAccessor, databaseFactory, services, appCaches, profilingLogger, publishedUrlProvider)
         {
             _memberManager = memberManager;
-            _memberService = memberService;
             _memberSignInManager = memberSignInManager;
-            _coreScopeProvider = coreScopeProvider;
             _twoFactorAuthService = twoFactorAuthService;
+            _accountDataService = accountDataService;
+            _userAccountService = userAccountService;
         }
 
         //facebook user login
@@ -68,22 +70,14 @@ namespace AutAndAutV10.Controllers
 
             if (!result.Succeeded) throw new Exception("Missing external cookie");
 
-            var email = result.Principal.FindFirstValue(ClaimTypes.Email)
-                ?? result.Principal.FindFirstValue("email")
-                ?? throw new Exception("Missing email claim");
+            var email = _accountDataService.GetUserEmail(result);
+            var name = _accountDataService.GetUserName(result);
 
             var user = await _memberManager.FindByEmailAsync(email);
 
-            var name = result.Principal.FindFirstValue(ClaimTypes.Name)
-                ?? result.Principal.FindFirstValue("name")
-                ?? throw new Exception("Missing email claim");
-
             if (user == null)
             {
-                _memberService.CreateMemberWithIdentity(email, email, name ?? email, FacebookMember.ModelTypeAlias);
-
-                user = await _memberManager.FindByNameAsync(email);
-                await _memberManager.AddToRolesAsync(user, new[] { "FacebookUser" });
+                user = await _userAccountService.CreateMemberWithIdentityAsync(name, email, FacebookMember.ModelTypeAlias, roles);
             }
             var isEnabledTwoFactor = _twoFactorAuthService.IsTwoFactorEnabledAsync(user.Key);
             if (isEnabledTwoFactor.Result)
@@ -93,12 +87,10 @@ namespace AutAndAutV10.Controllers
                 HttpContext.Session.SetString(SessionMemberEmail, user.Email);
                 return Redirect("/login/twofactorvalidatePage");
             }
-            else
-            {
-                await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-                await _memberSignInManager.SignInAsync(user, false);
-            }
 
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+            await _memberSignInManager.SignInAsync(user, false);
+       
             return Redirect("/");
         }
     }

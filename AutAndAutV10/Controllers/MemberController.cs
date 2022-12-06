@@ -71,11 +71,8 @@ namespace AutAndAutV10.Controllers
                         HttpContext.Session.SetString(SessionMemberEmail, model.Username);
                         return Redirect("/login/twofactorvalidatePage");
                     }
-                    else
-                    {
-                        var result = await _memberSignInManager.PasswordSignInAsync(model.Username, model.Password, false, true);
-                        if (result.Succeeded) return Redirect("/");
-                    }
+                    var result = await _memberSignInManager.PasswordSignInAsync(model.Username, model.Password, false, true);
+                    if (result.Succeeded) { return Redirect("/"); }
                 }
                 else
                 {
