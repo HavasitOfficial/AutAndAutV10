@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Logging;
 using Umbraco.Cms.Core.Routing;
@@ -22,7 +23,7 @@ namespace AutAndAutV10.Controllers
         {
 
         }
-        //TODO authentication
+        [Authorize]
         public IActionResult RenderSecurity()
         {
             return PartialView("SecurityUserPage");

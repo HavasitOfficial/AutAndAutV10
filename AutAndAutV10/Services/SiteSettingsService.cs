@@ -6,11 +6,6 @@ namespace AutAndAutV10.Services
 {
     public class SiteSettingsService : ISiteSettingsService
     {
-
-        public SiteSettingsService()
-        {
-
-        }
         public SiteSettings GetSiteSettings(IPublishedContent currentPage, IPublishedValueFallback publishedValueFallback)
         {
             var rootSite = currentPage.Root();

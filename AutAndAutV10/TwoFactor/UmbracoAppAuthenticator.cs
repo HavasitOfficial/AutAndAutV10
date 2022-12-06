@@ -48,12 +48,12 @@ namespace AutAndAutV10.TwoFactor
         /// <param name="userOrMemberKey">The key of the user or member</param>
         /// <param name="secret">The secret that ensures only this user can connect to the authenticator app</param>
         /// <returns>The required data to setup the authenticator app</returns>
-        public Task<object> GetSetupDataAsync(Guid userOrMemberKey, string secret)
+        public Task<object>? GetSetupDataAsync(Guid userOrMemberKey, string secret)
         {
             var member = _memberService.GetByKey(userOrMemberKey);
 
             var twoFactorAuthenticator = new TwoFactorAuthenticator();
-            SetupCode setupInfo = twoFactorAuthenticator.GenerateSetupCode("AutAndAutV10", member.Username, secret, false);
+            SetupCode setupInfo = twoFactorAuthenticator.GenerateSetupCode("AutAndAutV10", member?.Username ?? "AutAndAut User", secret, false);
             return Task.FromResult<object>(new QrCodeSetupData()
             {
                 SetupCode = setupInfo,
@@ -67,8 +67,7 @@ namespace AutAndAutV10.TwoFactor
         public bool ValidateTwoFactorPIN(string secret, string code)
         {
             var twoFactorAuthenticator = new TwoFactorAuthenticator();
-            var tokne = twoFactorAuthenticator.ValidateTwoFactorPIN(secret, code);
-            return tokne;
+            return twoFactorAuthenticator.ValidateTwoFactorPIN(secret, code);
         }
 
         /// <summary>

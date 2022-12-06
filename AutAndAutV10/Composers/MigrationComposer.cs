@@ -22,8 +22,7 @@ namespace AutAndAutV10.Composers
 
         public void Initialize()
         {
-            var forgottenPasswordUpgrader = new Upgrader(new ForgottenPasswordMigration());
-            forgottenPasswordUpgrader.Execute(_migrationPlanExecutor, scopeProvider, keyValueService);
+            new Upgrader(new ForgottenPasswordMigration()).Execute(_migrationPlanExecutor, scopeProvider, keyValueService);
         }
 
         public void Terminate()

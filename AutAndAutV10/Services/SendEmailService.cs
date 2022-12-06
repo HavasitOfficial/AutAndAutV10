@@ -9,11 +9,13 @@ namespace AutAndAutV10.Services
     {
         private readonly EmailConfiguration _emailConfiguration;
         private readonly ILogService _logService;
+        private readonly IConfiguration _configuration;
 
-        public SendEmailService(EmailConfiguration emailConfiguration, ILogService logService)
+        public SendEmailService(EmailConfiguration emailConfiguration, ILogService logService, IConfiguration configuration)
         {
             _emailConfiguration = emailConfiguration;
             _logService = logService;
+            _configuration = configuration;
         }
 
         public void SendEmail(Message message)
@@ -37,19 +39,15 @@ namespace AutAndAutV10.Services
             using var client = new SmtpClient();
             try
             {
+                var AuthMechanisms = _configuration.GetValue<string>("AutAndAutOptions:AuthMechanisms");
                 client.Connect(_emailConfiguration.SmtpServer, _emailConfiguration.Port, false);
-                client.AuthenticationMechanisms.Remove("XOAUTH2");
+                client.AuthenticationMechanisms.Remove(AuthMechanisms);
                 client.Authenticate(_emailConfiguration.UserName, _emailConfiguration.AppPassword);
                 client.Send(mailMessage);
             }
             catch(Exception ex)
             {
                 _logService.Error(ex, ex.Message);
-            }
-            finally
-            {
-                client.Disconnect(true);
-                client.Dispose();
             }
         }
     }
