@@ -41,13 +41,15 @@
                         {
                             @using (Html.BeginUmbracoForm<UmbTwoFactorLoginController>(nameof(UmbTwoFactorLoginController.ValidateAndSaveSetup)))
                             {
-                                <h3>Setup @providerName</h3>
-                                <img src="@qrCodeSetupData.SetupCode.QrCodeSetupImageUrl" />
-                                <p>Scan the code above with your authenticator app <br /> and enter the resulting code here to validate:</p>
-                                <input type="hidden" name="providerName" value="@providerName" />
-                                <input type="hidden" name="secret" value="@qrCodeSetupData.Secret" />
-                                <input type="text" name="code" />
-                                <button type="submit">Validate & save</button>
+                                <div class="text-align-center">
+                                    <h3>Setup @providerName</h3>
+                                    <img src="@qrCodeSetupData.SetupCode.QrCodeSetupImageUrl" />
+                                    <p>Scan the code above with your authenticator app <br /> and enter the resulting code here to validate:</p>
+                                    <input type="hidden" name="providerName" value="@providerName" />
+                                    <input type="hidden" name="secret" value="@qrCodeSetupData.Secret" />
+                                    <input type="text" name="code" />
+                                    <button type="submit">Validate & save</button>
+                                </div>
                             }
                         }
                     }
